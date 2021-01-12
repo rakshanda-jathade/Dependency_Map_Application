@@ -1,0 +1,181 @@
+{%  load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type ="text/css" href="{% static 'blog/main.css'%}">
+
+    <meta charset="utf-8">
+
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+   <style>   
+    
+    svg {
+      border:1px solid black;
+      float: right;
+    }
+
+    p{
+  display: block;
+  text-align: justify;
+}
+
+    body {font-family: Arial, Helvetica, sans-serif;  text-align: justify;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #ffffff;
+  align-content: center;
+  margin: auto;
+  padding: 0;
+  
+  
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:1} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:1}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+ 
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 8px 25px;
+  
+  background-color: #87aadf;
+  color: white;
+}
+
+.modal-body {padding: 8px 25px;}
+
+.modal-footer {
+  padding: 8px 25px;
+  background-color: #87aadf;
+  color: white;
+}
+    </style> 
+   <style> .node circle{cursor:pointer;stroke:#3182bd;stroke-width:1.5px}.node text{font:11px sans-serif;pointer-events:none;text-anchor:middle}line.link{fill:none;stroke:#9ecae1;stroke-width:1.5px} </style>
+	{% if title %}
+
+	<title>Django-blog -{{ title}}</title>
+
+	{% else %}
+	<title>Django-blog </title>
+	{% endif %}
+</head>
+<body>
+ <header class="site-header">
+  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+    <div class="container">
+      <a class="navbar-brand mr-4" href="/home">Dep-Map</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <div class="navbar-nav mr-auto">
+          <a class="nav-item nav-link" href="/home">Home</a>
+          <a class="nav-item nav-link" href="/about">About</a>
+          <a class="nav-item nav-link" href="/index">Feedback</a>
+          <a class="nav-item nav-link" href="/graph">Graph</a>
+           
+        </div>
+        <!-- Navbar Right Side -->
+        <div class="navbar-nav">
+          {% if user.is_authenticated %}
+           <a class="nav-item nav-link" href="{% url 'profile' %}"><img class="rounded-circle" width="30" height="30" src="{{ request.user.profile.image.url }}" id="img"> </a>
+           <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+
+        {% else %}
+          <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+          <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+        {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+
+<br>
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-md-8 ">
+  
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+          {{ message }}
+        </div>
+
+        {% endfor %}
+
+      {% endif %}
+      {% block content %}{% endblock %}
+      
+    </div>
+    
+  </div>
+</main>
+
+
+	<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+</body>
+</html>
